@@ -46,6 +46,37 @@ int map[MAP_SIZE][MAP_SIZE] = { // 지금은 초기 배열에 할당했지만 �
     {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
 };
 
+enum Direction{
+    Up, Right, Down, Left
+};
+
+void placeGrowth(){
+    // 성장 아이템 랜덤 배치
+    bool flag=false;
+    do{
+        int a = rand()%21+1;
+        int b = rand()%21+1;
+        if(map[a][b]==0){
+            map[a][b]=5;
+            flag=true;
+        }
+    }while(flag!=true);
+    
+}
+
+void poisionItem(){
+    // 독 아이템
+    bool flag=false;
+    do{
+        int a = rand()%21+1;
+        int b = rand()%21+1;
+        if(map[a][b]==0){
+            map[a][b]=6;
+            flag=true;
+        }
+    }while(flag!=true);
+}
+
 // 맵을 화면에 출력하는 함수
 void drawMap() {
     for (int i = 0; i < MAP_SIZE; i++) {
@@ -63,10 +94,18 @@ void drawMap() {
                 mvprintw(i, j, "@");
                 attroff(COLOR_PAIR(3));
             } else if (map[i][j] == 4) {
-                attron(COLOR_PAIR(4)); // 아이템 색상
+                attron(COLOR_PAIR(4)); // 몸통 색상
                 mvprintw(i, j, "O");
                 attroff(COLOR_PAIR(4));
-            } else if (map[i][j] == 9){
+            }else if(map[i][j]==5){ // 성장 아이템
+                attron(COLOR_PAIR(3)); // 지렁이 색상
+                mvprintw(i, j, " ");
+                attroff(COLOR_PAIR(3));
+            }else if(map[i][j]==6){ // 독 아이템
+                attron(COLOR_PAIR(6)); // 지렁이 색상
+                mvprintw(i, j, " ");
+                attroff(COLOR_PAIR(6));
+            }else if (map[i][j] == 9){
                 if(gateCheck==false){
                     gates.x1 = i; gates.y1=j;
                     gateCheck = true;
@@ -141,7 +180,8 @@ int main(){
     init_pair(2, COLOR_BLACK, COLOR_WHITE);  // 게임 맵 테두리 색상
     init_pair(3, COLOR_WHITE, COLOR_GREEN); // 지렁이 색상
     init_pair(4, COLOR_WHITE, COLOR_YELLOW);// 지렁이 몸통 색상
-    init_pair(5, COLOR_WHITE, COLOR_MAGENTA);
+    init_pair(5, COLOR_WHITE, COLOR_MAGENTA); // 게이트 색
+    init_pair(6, COLOR_WHITE, COLOR_RED); // 독 아이템
 
     nodelay(stdscr, true);
     keypad(stdscr, true);
@@ -157,6 +197,15 @@ int main(){
         if(gatenum>50){
             randomGate();
             gatenum=0;
+            for(int i=0; i<MAP_SIZE; i++){
+                for(int j=0; j<MAP_SIZE; j++){
+                    if(map[i][j]==5 || map[i][j] ==6){
+                        map[i][j]=0;
+                    }
+                }
+            }
+            placeGrowth();
+            poisionItem();
         }
         refresh();
 
@@ -244,8 +293,24 @@ int main(){
         int nextX = body[0].x + directionX;
         int nextY = body[0].y + directionY;
 
+        // 아이템 충돌
+        if(map[nextX][nextY]==5){
+            Snake newBodyPart;
+            newBodyPart.x = nextX;
+            newBodyPart.y = nextY;
+            body.insert(body.begin(), newBodyPart);
+        }
+
+        if(map[nextX][nextY]==6){ // 독 아이템
+            if(body.size()>3){
+                body.pop_back();
+            }else{
+                gameOver = true;
+            }
+        }
+
         // 벽 또는 자기 자신과의 충돌 체크
-        if (nextX < 0 || nextX > MAP_SIZE || nextY < 0 || nextY > MAP_SIZE|| map[nextX][nextY] == 2) {
+        if (map[nextX][nextY] == 2) {
             if(map[nextX][nextY]==9) continue;
             gameOver = true;
             break;
@@ -256,6 +321,7 @@ int main(){
                 break;
             }
         }
+        
 
         // Snake의 머리 위치 업데이트
         snake.x = nextX;
