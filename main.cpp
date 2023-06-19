@@ -29,7 +29,6 @@ int map[MAP_SIZE][MAP_SIZE] = { // 지금은 초기 배열에 할당했지만 �
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
@@ -40,7 +39,8 @@ int map[MAP_SIZE][MAP_SIZE] = { // 지금은 초기 배열에 할당했지만 �
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
@@ -76,8 +76,8 @@ void drawMap() {
                 }
                 
                 attron(COLOR_PAIR(5)); // Gate color
-                mvprintw(gates.y1, gates.x1, "+");
-                mvprintw(gates.y2, gates.x2, "+");
+                mvprintw(gates.y1, gates.x1, "Q");
+                mvprintw(gates.y2, gates.x2, "Q");
                 attroff(COLOR_PAIR(5));
             }
 
@@ -86,15 +86,15 @@ void drawMap() {
     }
 }
 
-void randomGate(){
+void randomGate(){ // gate를 랜덤으로 나타내는 함수
     srand(time(NULL));
     int cnt=0;
-    for(int i=0; i<MAP_SIZE; i++){
+    for(int i=0; i<MAP_SIZE; i++){ //원래 생성되어 있던 게이트 닫기
         for(int j=0; j<MAP_SIZE; j++){
             if(map[i][j]==9) map[i][j]=2;
         }
     }
-    do{
+    do{ // 게이트 2개 생성될 때까지 루프
         int i=rand()%21+1;
         int j=rand()%21+1;
         if(map[i][j]==2){
@@ -105,9 +105,8 @@ void randomGate(){
     }while(1);
 }
 
-
 int main(){
-
+    time(0);
     // Snake의 초기 위치
     int startX = MAP_SIZE / 2;
     int startY = MAP_SIZE / 2;
@@ -155,7 +154,7 @@ int main(){
     while (!gameOver) {
         clear();
         drawMap();
-        if(gatenum>100){
+        if(gatenum>50){
             randomGate();
             gatenum=0;
         }
@@ -184,9 +183,61 @@ int main(){
 
         // Check for collision with the gates
         if ((body[0].x == gates.x1 && body[0].y == gates.y1) || (body[0].x == gates.x2 && body[0].y == gates.y2)) {
-            // 원래거 하나씩 지우면서 반대편에 하나씩 생성
+            // 들어가는 게이트에서 머리부터 하나씩 지우면서 반대편에 게이트에서 스네이크 머리부터 하나씩 생성
 
-            
+            // 게이트에 들어갈 때 몸통을 임시 저장할 배열
+            vector<Snake> tempBody;
+
+            // 스네이크의 머리부터 몸통을 임시 배열에 복사
+            for (int i = 0; i < body.size(); i++) {
+                tempBody.push_back(body[i]);
+            }
+
+            // 들어가는 게이트에서 머리부터 하나씩 지우면서 반대편에 게이트에서 스네이크 머리부터 하나씩 생성
+            if (body[0].x == gates.x1 && body[0].y == gates.y1) {
+                // 게이트 1에서 게이트 2로 이동
+                for (int i = 0; i < tempBody.size(); i++) {
+                    tempBody[i].x = gates.x2;
+                    tempBody[i].y = gates.y2;
+                }
+                if(gates.x2 == 0) {
+                    directionX = 1;
+                    directionY = 0;
+                }else if(gates.x2 == MAP_SIZE){
+                    directionX = -1;
+                    directionY = 0;
+                }else if(gates.y2 ==0){
+                    directionX = 0;
+                    directionY = -1;
+                }else{
+                    directionX = 0;
+                    directionY = 1;
+                }
+            } else {
+                // 게이트 2에서 게이트 1로 이동
+                for (int i = 0; i < tempBody.size(); i++) {
+                    body[i].x = gates.x1;
+                    body[i].y = gates.y1;
+                }
+                if(gates.x1 == 0) {
+                    directionX = 1;
+                    directionY = 0;
+                }else if(gates.x1 == MAP_SIZE){
+                    directionX = -1;
+                    directionY = 0;
+                }else if(gates.y1 ==0){
+                    directionX = 0;
+                    directionY = -1;
+                }else{
+                    directionX = 0;
+                    directionY = 1;
+                }
+            }
+            // 스네이크 몸통을 업데이트
+            for (int i = 0; i < body.size(); i++) {
+                body[i].x = tempBody[i].x;
+                body[i].y = tempBody[i].y;
+            }
         }
 
         // Snake 이동
@@ -194,7 +245,8 @@ int main(){
         int nextY = body[0].y + directionY;
 
         // 벽 또는 자기 자신과의 충돌 체크
-        if (nextX < 0 || nextX >= MAP_SIZE || nextY < 0 || nextY >= MAP_SIZE) {
+        if (nextX < 0 || nextX > MAP_SIZE || nextY < 0 || nextY > MAP_SIZE) {
+            if(map[nextX][nextY]==9) continue;
             gameOver = true;
             break;
         }
