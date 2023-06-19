@@ -3,7 +3,8 @@ This project is the final project of Kookmin Univ. Department of Software cpp co
 
 **0. Setup**
 
-    In this project, TUI (Text User Interface) was applied using _‘ncurses’_ as an external library. We installed it using the `brew install ncurses` command according to the development environment _Mac OS_. The <ncurses.h> header file is read through the #include directive.
+In this project, TUI (Text User Interface) was applied using _‘ncurses’_ as an external library. We installed it using the `brew install ncurses` command according to the development environment _Mac OS_. The <ncurses.h> header file is read through the #include directive.
+
 
 
 **1. Map**
