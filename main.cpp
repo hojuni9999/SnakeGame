@@ -137,11 +137,11 @@ int main(){
 
     initscr(); // Curses 모드 시작
     start_color(); // 색상 기능 활성화
-    init_pair(1, COLOR_RED, COLOR_BLACK);   // 벽 색상
-    init_pair(2, COLOR_WHITE, COLOR_BLACK);  // 게임 맵 테두리 색상
-    init_pair(3, COLOR_GREEN, COLOR_BLACK); // 지렁이 색상
-    init_pair(4, COLOR_YELLOW, COLOR_BLACK);// 지렁이 몸통 색상
-    init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(1, COLOR_WHITE, COLOR_RED);   // 벽 색상
+    init_pair(2, COLOR_BLACK, COLOR_WHITE);  // 게임 맵 테두리 색상
+    init_pair(3, COLOR_WHITE, COLOR_GREEN); // 지렁이 색상
+    init_pair(4, COLOR_WHITE, COLOR_YELLOW);// 지렁이 몸통 색상
+    init_pair(5, COLOR_WHITE, COLOR_MAGENTA);
 
     nodelay(stdscr, true);
     keypad(stdscr, true);
@@ -245,7 +245,7 @@ int main(){
         int nextY = body[0].y + directionY;
 
         // 벽 또는 자기 자신과의 충돌 체크
-        if (nextX < 0 || nextX > MAP_SIZE || nextY < 0 || nextY > MAP_SIZE) {
+        if (nextX < 0 || nextX > MAP_SIZE || nextY < 0 || nextY > MAP_SIZE|| map[nextX][nextY] == 2) {
             if(map[nextX][nextY]==9) continue;
             gameOver = true;
             break;
