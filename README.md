@@ -24,7 +24,15 @@ This project is the final project of Kookmin Univ. Department of Software cpp co
 
 
 **3. Item**  
-We also implemented two types of Items that change the Snake's size. It consists of two items: a _Growth Item_ that increases the size by 1 upon contact and a _Poison Item_ that decreases the size by 1 upon contact. These Items are set to be randomly generated in an empty space(‘0’). In addition, only 3 items can appear on the map at the same time, 2 Growth Items and 1 Poison Item.
+- We also implemented two types of Items that change the Snake's size.
+- _Snake_ and _Item_ have an interaction that affects the Snake's size, and was implemented in compliance with the following rules.
+    - When Snake and Item _collide_, Snake, the subject of the game, acquires the Item.
+    - When eating a Growth Item, Snake's size _increases_ by 1.
+    - If you eat a Poison Item, the size of Snake _decreases_ by 1.
+    - At regular intervals, an item appears in _a random space_ where Snake is not located. (At this time, the existing item disappears and a new item is created in a different location, and the number of items appearing at the same time is limited to 3.)
+    - On the screen, it is implemented so that two Items can be _distinguished_ by different colors or symbols.
+- These Items are set to be _randomly_ generated in an empty space(‘0’).
+- In addition, _only 3 items_ can appear on the map at the same time, 2 Growth Items and 1 Poison Item.
 
 
 **4. Gate**  
