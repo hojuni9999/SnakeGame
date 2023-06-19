@@ -2,15 +2,25 @@
 This project is the final project of Kookmin Univ. Department of Software cpp course.
 
 **0. Setup**  
-In this project, TUI (Text User Interface) was applied using _‘ncurses’_ as an external library. We installed it using the `brew install ncurses` command according to the development environment _Mac OS_. The <ncurses.h> header file is read through the #include directive.
+- In this project, TUI (Text User Interface) was applied using _‘ncurses’_ as an external library.
+- We installed it using the `brew install ncurses` command according to the development environment _Mac OS_.
+- The <ncurses.h> header file is read through the #include directive.
 
 
 **1. Map**  
-The map space in which the game will be played consists of a space where the main character, _Snake_, can work, _Wall_, _Immune Wall_, _Snake's head and tail_, _Growth Item_ and _Poison Item_, and _Gate A_ and _B_. The 21*21 size Gameboard is implemented by statically allocating a two-dimensional array map through a char type data type. I set '3' and '4', respectively, '5' and '6' for Growth/Poison Item, and '7' for Gate A/B. It has been implemented to update some of the components of the map screen at regular intervals.
+- The map space in which the game will be played consists of a space where the main character, _Snake_, can work, _Wall_, _Immune Wall_, _Snake's head and tail_, _Growth Item_ and _Poison Item_, and _Gate A_ and _B_.
+- The 21*21 size Gameboard is implemented by statically allocating a two-dimensional array map through a char type data type.
+- I set '3' and '4', respectively, '5' and '6' for Growth/Poison Item, and '7' for Gate A/B. It has been implemented to update some of the components of the map screen at regular intervals.
 
 
 **2. Snake**  
-Snake appeared by setting the initial location on the map. Head coordinates are set to x, y coordinates, and body coordinates are managed and updated through _vector_. Snake also complied with some rules and implemented the game to end when the _game over condition_ is met. In addition, by dividing the snake's moving direction and the user's key input value into the number of cases, the x and y values that correspond to the values input to the snake's head are set to be continuously updated.
+- Snake appeared by setting the initial location on the map.
+- Head coordinates are set to x, y coordinates, and body coordinates are managed and updated through _vector_.
+- By dividing the snake's movement direction and the user's key input value into the number of cases, the x and y values that correspond to the values input to the snake's head are set to be continuously updated.
+- By complying with some rules, the game ends when the _game over conditions_ are met.
+- Also implemented and followed the rules below.
+    - The direction key is input by the _user_, and if there is no input, it moves only in the existing direction.
+    - Keys in the same direction as the direction you are going are ignored, and if you press the opposite key, _the game ends_.
 
 
 **3. Item**  
