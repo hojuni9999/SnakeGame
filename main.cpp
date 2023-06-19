@@ -1,12 +1,22 @@
 #include <ncurses.h>
 #include <iostream>
 #include <vector>
+#include <ctime>
 using namespace std;
 
 // Snake의 구조체
 struct Snake {
     int x, y;
 };
+
+// Gate의 구조체
+struct Gate {
+    int x1, y1;
+    int x2, y2;
+};
+
+Gate gates;
+bool gateCheck=false;
 
 // 게임 맵의 크기
 const int MAP_SIZE = 21;
@@ -19,6 +29,7 @@ int map[MAP_SIZE][MAP_SIZE] = { // 지금은 초기 배열에 할당했지만 �
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
@@ -29,8 +40,7 @@ int map[MAP_SIZE][MAP_SIZE] = { // 지금은 초기 배열에 할당했지만 �
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
     {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
@@ -56,9 +66,43 @@ void drawMap() {
                 attron(COLOR_PAIR(4)); // 아이템 색상
                 mvprintw(i, j, "O");
                 attroff(COLOR_PAIR(4));
+            } else if (map[i][j] == 9){
+                if(gateCheck==false){
+                    gates.x1 = i; gates.y1=j;
+                    gateCheck = true;
+                }else{
+                    gates.x2 =i; gates.y2=j;
+                    gateCheck = false;
+                }
+                
+                attron(COLOR_PAIR(5)); // Gate color
+                mvprintw(gates.y1, gates.x1, "+");
+                mvprintw(gates.y2, gates.x2, "+");
+                attroff(COLOR_PAIR(5));
             }
+
+            
         }
     }
+}
+
+void randomGate(){
+    srand(time(NULL));
+    int cnt=0;
+    for(int i=0; i<MAP_SIZE; i++){
+        for(int j=0; j<MAP_SIZE; j++){
+            if(map[i][j]==9) map[i][j]=2;
+        }
+    }
+    do{
+        int i=rand()%21+1;
+        int j=rand()%21+1;
+        if(map[i][j]==2){
+            map[i][j] = 9;
+            cnt++;
+        }
+        if(cnt>=2) break;
+    }while(1);
 }
 
 
@@ -90,12 +134,15 @@ int main(){
     snake3.y = startY;
     body.push_back(snake3);
 
+    // 게이트 초기 위치는 맵에 9로 표시해두고 시작
+
     initscr(); // Curses 모드 시작
     start_color(); // 색상 기능 활성화
     init_pair(1, COLOR_RED, COLOR_BLACK);   // 벽 색상
-    init_pair(2, COLOR_CYAN, COLOR_BLACK);  // 게임 맵 테두리 색상
+    init_pair(2, COLOR_WHITE, COLOR_BLACK);  // 게임 맵 테두리 색상
     init_pair(3, COLOR_GREEN, COLOR_BLACK); // 지렁이 색상
     init_pair(4, COLOR_YELLOW, COLOR_BLACK);// 지렁이 몸통 색상
+    init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
 
     nodelay(stdscr, true);
     keypad(stdscr, true);
@@ -104,9 +151,14 @@ int main(){
 
     // 게임 루프
     bool gameOver = false;
+    int gatenum=0;
     while (!gameOver) {
         clear();
         drawMap();
+        if(gatenum>100){
+            randomGate();
+            gatenum=0;
+        }
         refresh();
 
         // 키 입력 처리
@@ -129,6 +181,14 @@ int main(){
                 directionY = 0;
                 break;
         }
+
+        // Check for collision with the gates
+        if ((body[0].x == gates.x1 && body[0].y == gates.y1) || (body[0].x == gates.x2 && body[0].y == gates.y2)) {
+            // 원래거 하나씩 지우면서 반대편에 하나씩 생성
+
+            
+        }
+
         // Snake 이동
         int nextX = body[0].x + directionX;
         int nextY = body[0].y + directionY;
@@ -163,6 +223,7 @@ int main(){
         drawMap();
         // 100ms 대기
         napms(100);
+        gatenum++;
     }
 
     // 게임 종료 후 NCurses 정리
