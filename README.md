@@ -79,13 +79,13 @@ This project is the final project of Kookmin Univ. Department of Software cpp co
 <div align="center">
     <img width="443" alt="2" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/b2d87460-7e99-4cca-8098-20ca3ed001b6">
     <p align="left">After a certain period of time, Items and Gates are randomly generated.</p>
-    <p align="left">When colliding with a red item (Poison Item), the length is reduced by 1, but if the length does not reach 3, the game is over.</p>
 </div>
 
 <br> <!-- 여기에 여백 추가 -->
 
 <div align="center">
     <img width="441" alt="3" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/14a4599c-0ef9-4b4e-ae21-cd2b33ddeb02">
+    <p align="left">When colliding with a red item (Poison Item), the length is reduced by 1, but if the length does not reach 3, the game is over.</p>
 </div>
 
 <br> <!-- 여기에 여백 추가 -->
