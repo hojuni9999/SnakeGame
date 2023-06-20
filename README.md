@@ -66,5 +66,3 @@ This project is the final project of Kookmin Univ. Department of Software cpp co
 - In the process of implementing the Mission Board, it was set to set a mission for each stage.
 - When all given missions are accomplished, move to the next stage and load a new map.
 - The stage consists of at least 4, and the map composition of each stage is configured differently.
-
-**6.**
