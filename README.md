@@ -63,8 +63,7 @@ This project is the final project of Kookmin Univ. Department of Software cpp co
     - If a non-Gate, Wall or Immune Wall collides with Snake, Game Over.
 
 **5. Score/Mission**  
-- The maximum length of the body during the game and the current length were calculated and displayed on the _Score Board_.
-- It also shows the number of _Growth Items_ and _Poison Items_ acquired during the game, and the number of _Gates_ passed.
+- The maximum length of the body during the game displayed on the _Score Board_.
 - In the process of implementing the Mission Board, it was set to set a mission for each stage.
 - When all given missions are accomplished, move to the next stage and load a new map.
 - The stage consists of at least 4, and the map composition of each stage is configured differently.
