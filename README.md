@@ -68,11 +68,24 @@ This project is the final project of Kookmin Univ. Department of Software cpp co
 - The stage consists of at least 4, and the map composition of each stage is configured differently.
 
 
-#### Code Implementation
-<img width="441" alt="1" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/57f4af15-bd21-4a3a-ba42-cb5cf38450eb">
-<img width="443" alt="2" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/b2d87460-7e99-4cca-8098-20ca3ed001b6">
-<img width="441" alt="3" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/14a4599c-0ef9-4b4e-ae21-cd2b33ddeb02">
-<img width="442" alt="4" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/5fe9069e-83bc-4a8c-899c-1348ccf4e1da">
-<img width="443" alt="5" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/f5f63d68-995c-447c-9f49-df24f6d3c3fb">
-<img width="442" alt="6" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/fd7bc916-94d9-4990-85b0-74a1d1bdf070">
+### Code Implementation
+<img width="441" alt="1" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/57f4af15-bd21-4a3a-ba42-cb5cf38450eb">  
+The first screen composition, there is a snake on top of the map, and there is a board representing Score and Mission on the right side.
 
+
+<img width="443" alt="2" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/b2d87460-7e99-4cca-8098-20ca3ed001b6">  
+After a certain period of time, Items and Gates are randomly generated.  
+When colliding with a red item (Poison Item), the length is reduced by 1, but if the length does not reach 3, the game is over.
+
+
+<img width="441" alt="3" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/14a4599c-0ef9-4b4e-ae21-cd2b33ddeb02">
+
+
+<img width="442" alt="4" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/5fe9069e-83bc-4a8c-899c-1348ccf4e1da">
+
+
+<img width="443" alt="5" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/f5f63d68-995c-447c-9f49-df24f6d3c3fb">
+
+
+<img width="442" alt="6" src="https://github.com/hojuni9999/SnakeGame/assets/84471557/fd7bc916-94d9-4990-85b0-74a1d1bdf070">  
+Eating the green item(Growth Item) increases the length by 1, and the shape of the map changes whenever the stage changes.
