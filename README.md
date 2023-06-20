@@ -36,11 +36,36 @@ This project is the final project of Kookmin Univ. Department of Software cpp co
 
 
 **4. Gate**  
-The Gate is implemented as appearing at an _arbitrary coordinate_ on the Wall (‘1’). In a similar way to the item implemented in step 3, the rand function was used to place the gate at an irregular, but map data, position of 1. When the snake passes through the gate, the gate disappears, and the coordinates of gates A and B are stored and managed in a vector.
-
+- The Gate is implemented as appearing at an _arbitrary coordinate_ on the Wall (‘1’).
+- In a similar way to the item implemented in step 3, the rand function was used to place the gate at an irregular, but map data, position of 1.
+- When the snake passes through the gate, the gate disappears, and the coordinates of gates A and B are stored and managed in a vector.
+- The following rules have been followed.
+    - Two gates are a pair.
+    - The positions on the two gates do not overlap.
+    - The Gate appears on the Wall (‘1’) at a _random location_.
+    - If a snake enters one gate, it _comes out through another gate_.
+    - If Snake is entering the gate, the gate does not disappear and is not created in another location.
+    - Only _one pair_ of gates appear at a time.
+    - When a gate is created at the edge of the map,
+        - Always advance to the inside of the map.
+        - Top wall -> Down
+        - Bottom wall -> top
+        - Left wall -> right direction
+        - Right wall -> left direction
+    - If the wall where the gate appears is in the middle of the map, prioritize it in the order below.
+        - Direction coincides with entry direction
+        - Direction of rotation in the clockwise direction of the entry direction
+        - Direction of rotation counterclockwise to entry direction
+        - Direction opposite to entry direction 
+    - A wall can be a gate, but an immune wall cannot be a gate.
+    - If a non-Gate, Wall or Immune Wall collides with Snake, Game Over.
 
 **5. Score/Mission**  
-The scoreboard above the gameboard displays the size of the current snake, the maximum length of the snake, the number of acquired items, and the number of gate passages. On the mission board, the given mission is displayed for each stage so that you can check the achievement on the right side of the board. Both the Scoreboard and Missionboard declared a new Window to distinguish them.
-
+- The maximum length of the body during the game and the current length were calculated and displayed on the _Score Board_.
+- It also shows the number of _Growth Items_ and _Poison Items_ acquired during the game, and the number of _Gates_ passed.
+- In the process of implementing the Mission Board, it was set to set a mission for each stage.
+- When all given missions are accomplished, move to the next stage and load a new map.
+- The stage consists of at least 4, and the map composition of each stage is configured differently.
+- Both the Scoreboard and Missionboard declared a new Window to distinguish them.
 
 **6.**
