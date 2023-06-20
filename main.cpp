@@ -198,40 +198,53 @@ void drawMap(int level) {
         }
     }
 }
-void snake_draw(auto& snake){
-    int number = 0;
-    for (const auto& s : snake) {
-            if(number == 0){
-                attron(COLOR_PAIR(3));
-                mvprintw(s.y, s.x, "@");
-                attroff(COLOR_PAIR(3));
-                number++;
-            }
-            else{
-                attron(COLOR_PAIR(4));
-                mvprintw(s.y, s.x, "O");
-                attroff(COLOR_PAIR(4));
-            }
-        }
-}
-// void snake_draw(vector<Snake>& snake){
-//     int number = 0;
-//     for (vector<Snake>::const_iterator it = snake.begin(); it != snake.end(); ++it) {
-//         const Snake& s = *it;
-//         if(number == 0){
-//             attron(COLOR_PAIR(3));
-//             mvprintw(s.y, s.x, "@");
-//             attroff(COLOR_PAIR(3));
-//             number++;
-//         }
-//         else{
-//             attron(COLOR_PAIR(4));
-//             mvprintw(s.y, s.x, "O");
-//             attroff(COLOR_PAIR(4));
-//         }
-//     }
-// }
 
+void snake_draw(vector<Snake>& snake){
+    int number = 0;
+    for (vector<Snake>::const_iterator it = snake.begin(); it != snake.end(); ++it) {
+        const Snake& s = *it;
+        if(number == 0){
+            attron(COLOR_PAIR(3));
+            mvprintw(s.y, s.x, "@");
+            attroff(COLOR_PAIR(3));
+            number++;
+        }
+        else{
+            attron(COLOR_PAIR(4));
+            mvprintw(s.y, s.x, "O");
+            attroff(COLOR_PAIR(4));
+        }
+    }
+}
+
+void ScreenStart()
+{
+    initscr();
+    start_color();
+    resize_term(21 + 4, 21 * 2);
+    mvprintw(11, 15,  "2023 CPP Team.9");
+    mvprintw(14, 7,  " HoJun.K / SeoHyun.B / Chohee.H ");
+    mvprintw(17, 12, "    PRESS ANY KEY    ");
+    border('#', '#', '#', '#', '#', '#', '#', '#');
+    refresh();
+    getch();
+    clear();
+    endwin();
+}
+
+void GameOverScene()
+{
+    initscr();
+    start_color();
+    resize_term(21 + 4, 21 * 2);
+    mvprintw(11, 15,  "Game Over!!");
+    mvprintw(17, 8, "'PRESS ANY KEY' ends the game");
+    border('#', '#', '#', '#', '#', '#', '#', '#');
+    refresh();
+    getch();
+    clear();
+    endwin();
+}
 
 void randomGate(int level){ // gate를 랜덤으로 나타내는 함수
     srand(time(NULL));
@@ -661,7 +674,7 @@ int main(){
     int startY = MAP_SIZE / 2;
 
     
-
+    ScreenStart();
     // 게이트 초기 위치는 맵에 9로 표시해두고 시작
 
     initscr(); // Curses 모드 시작
@@ -697,6 +710,7 @@ int main(){
 
     // 게임 종료 후 NCurses 정리
     endwin();
+    GameOverScene();
     std::cout << "you lose" << std::endl;
     return 0;
 }
