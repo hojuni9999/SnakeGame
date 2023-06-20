@@ -34,7 +34,7 @@ This project is the final project of Kookmin Univ. Department of Software cpp co
     - At regular intervals, an item appears in _a random space_ where Snake is not located. (At this time, the existing item disappears and a new item is created in a different location, and the number of items appearing at the same time is limited to 3.)
     - On the screen, it is implemented so that two Items can be _distinguished_ by different colors or symbols.
 - These Items are set to be _randomly_ generated in an empty space(‘0’).
-- In addition, _only 3 items_ can appear on the map at the same time, 2 Growth Items and 1 Poison Item.
+- In addition, _only 1 items_ can appear on the map at the same time, 1 Growth Items and 1 Poison Item.
 
 
 **4. Gate**  
